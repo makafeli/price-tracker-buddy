@@ -1,11 +1,42 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { api, PriceChange } from "../services/api";
+import { Hero } from "../components/Hero";
+import { PriceCard } from "../components/PriceCard";
+import { Loader2 } from "lucide-react";
 
 const Index = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["price-changes", searchQuery],
+    queryFn: () =>
+      searchQuery ? api.searchTLD(searchQuery) : api.getPriceChanges(),
+  });
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gray-50">
+      <Hero onSearch={handleSearch} />
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-danger">Failed to load price changes</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {data?.map((priceChange: PriceChange) => (
+              <PriceCard key={`${priceChange.tld}-${priceChange.date}`} data={priceChange} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
