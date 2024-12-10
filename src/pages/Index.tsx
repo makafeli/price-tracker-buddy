@@ -19,12 +19,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
       <Hero onSearch={handleSearch} />
       <div className="max-w-7xl mx-auto px-4 py-12">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
           </div>
         ) : error ? (
           <div className="text-center py-12">
@@ -33,7 +33,10 @@ const Index = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {data?.map((priceChange: PriceChange) => (
-              <PriceCard key={`${priceChange.tld}-${priceChange.date}`} data={priceChange} />
+              <PriceCard
+                key={`${priceChange.tld}-${priceChange.date}`}
+                data={priceChange}
+              />
             ))}
           </div>
         )}
