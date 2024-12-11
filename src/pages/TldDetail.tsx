@@ -54,6 +54,11 @@ const TldDetail = () => {
     );
   }
 
+  // Calculate additional revenue
+  const additionalRevenue = priceChange.domainCount
+    ? priceChange.priceChange * priceChange.domainCount
+    : 0;
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 dark:bg-gray-900 transition-colors">
       <Link to="/" className="flex items-center text-primary/70 hover:text-primary mb-6 dark:text-white/70 dark:hover:text-white">
@@ -93,6 +98,27 @@ const TldDetail = () => {
             </p>
           </div>
         </div>
+
+        {priceChange.domainCount && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="p-6 bg-primary/[0.02] dark:bg-white/[0.02] rounded-lg">
+              <p className="text-sm text-secondary/70 dark:text-gray-400 mb-1">Total Domains</p>
+              <p className="text-2xl font-bold text-primary dark:text-white">
+                {priceChange.domainCount.toLocaleString()}
+              </p>
+            </div>
+
+            <div className="p-6 bg-primary/[0.02] dark:bg-white/[0.02] rounded-lg">
+              <p className="text-sm text-secondary/70 dark:text-gray-400 mb-1">Additional Revenue</p>
+              <p className="text-2xl font-bold text-primary dark:text-white">
+                ${additionalRevenue.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </p>
+            </div>
+          </div>
+        )}
 
         {chartData && chartData.length > 0 && (
           <div className="mt-8 p-4 bg-white dark:bg-gray-800 rounded-lg">

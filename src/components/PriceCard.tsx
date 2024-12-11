@@ -14,6 +14,9 @@ export const PriceCard = ({ data }: PriceCardProps) => {
     day: "numeric",
   });
 
+  // Calculate additional revenue
+  const additionalRevenue = data.domainCount ? (data.priceChange * data.domainCount) : 0;
+
   // Extract the TLD name without the dot for the URL
   const tldPath = data.tld.replace(".", "").toLowerCase();
 
@@ -66,6 +69,28 @@ export const PriceCard = ({ data }: PriceCardProps) => {
             </p>
           </div>
         </div>
+        
+        {data.domainCount && (
+          <div className="mt-4 p-4 bg-primary/[0.02] rounded-lg">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-secondary/70">Domain Count</p>
+                <p className="text-lg font-semibold text-primary">
+                  {data.domainCount.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-secondary/70">Additional Revenue</p>
+                <p className="text-lg font-semibold text-primary">
+                  ${additionalRevenue.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Link>
   );
