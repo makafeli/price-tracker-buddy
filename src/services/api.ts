@@ -13,12 +13,22 @@ export interface PriceChange {
 
 export const api = {
   async getPriceChanges(): Promise<PriceChange[]> {
-    const response = await axios.get(`${API_BASE_URL}/price-changes`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/price-changes`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching price changes:", error);
+      return [];
+    }
   },
 
   async searchTLD(query: string): Promise<PriceChange[]> {
-    const response = await axios.get(`${API_BASE_URL}/search?tld=${query}`);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/search?tld=${query}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error searching TLD:", error);
+      return [];
+    }
   },
 };
