@@ -1,6 +1,7 @@
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
-import { PriceChange } from "../services/api";
 import { Link } from "react-router-dom";
+import { PriceChange } from "../types/price";
+import { calculateAdditionalRevenue, formatCurrency, formatNumber, formatDate, getTldPath } from "../utils/priceCalculations";
 
 interface PriceCardProps {
   data: PriceChange;
@@ -8,17 +9,9 @@ interface PriceCardProps {
 
 export const PriceCard = ({ data }: PriceCardProps) => {
   const isIncrease = data.priceChange > 0;
-  const formattedDate = new Date(data.date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  // Calculate additional revenue
-  const additionalRevenue = data.domainCount ? (data.priceChange * data.domainCount) : 0;
-
-  // Extract the TLD name without the dot for the URL
-  const tldPath = data.tld.replace(".", "").toLowerCase();
+  const formattedDate = formatDate(data.date);
+  const additionalRevenue = calculateAdditionalRevenue(data.priceChange, data.domainCount);
+  const tldPath = getTldPath(data.tld);
 
   return (
     <Link to={`/tld/${tldPath}`}>
@@ -30,43 +23,26 @@ export const PriceCard = ({ data }: PriceCardProps) => {
               {data.tld}
             </h3>
           </div>
-          <div
-            className={`flex items-center ${
-              isIncrease ? "text-danger" : "text-success"
-            }`}
-          >
-            {isIncrease ? (
-              <ArrowUpIcon className="w-5 h-5" />
-            ) : (
-              <ArrowDownIcon className="w-5 h-5" />
-            )}
-            <span className="font-semibold ml-1">
-              {data.percentageChange.toFixed(2)}%
-            </span>
+          <div className={`flex items-center ${isIncrease ? "text-danger" : "text-success"}`}>
+            {isIncrease ? <ArrowUpIcon className="w-5 h-5" /> : <ArrowDownIcon className="w-5 h-5" />}
+            <span className="font-semibold ml-1">{data.percentageChange.toFixed(2)}%</span>
           </div>
         </div>
+
         <div className="flex justify-between items-center p-4 bg-primary/[0.02] rounded-lg">
           <div>
             <p className="text-sm text-secondary/70">Old Price</p>
-            <p className="text-lg font-semibold text-primary">
-              ${data.oldPrice.toFixed(2)}
-            </p>
+            <p className="text-lg font-semibold text-primary">{formatCurrency(data.oldPrice)}</p>
           </div>
           <div className="text-center px-4 py-2 rounded-md bg-white shadow-sm">
             <p className="text-sm text-secondary/70">Change</p>
-            <p
-              className={`text-lg font-semibold ${
-                isIncrease ? "text-danger" : "text-success"
-              }`}
-            >
-              ${Math.abs(data.priceChange).toFixed(2)}
+            <p className={`text-lg font-semibold ${isIncrease ? "text-danger" : "text-success"}`}>
+              {formatCurrency(Math.abs(data.priceChange))}
             </p>
           </div>
           <div className="text-right">
             <p className="text-sm text-secondary/70">New Price</p>
-            <p className="text-lg font-semibold text-primary">
-              ${data.newPrice.toFixed(2)}
-            </p>
+            <p className="text-lg font-semibold text-primary">{formatCurrency(data.newPrice)}</p>
           </div>
         </div>
         
@@ -76,16 +52,13 @@ export const PriceCard = ({ data }: PriceCardProps) => {
               <div>
                 <p className="text-sm text-secondary/70">Domain Count</p>
                 <p className="text-lg font-semibold text-primary">
-                  {data.domainCount.toLocaleString()}
+                  {formatNumber(data.domainCount)}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-secondary/70">Additional Revenue</p>
                 <p className="text-lg font-semibold text-primary">
-                  ${additionalRevenue.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
+                  {formatCurrency(additionalRevenue)}
                 </p>
               </div>
             </div>

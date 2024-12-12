@@ -1,16 +1,7 @@
 import axios from "axios";
+import { PriceChange } from "../types/price";
 
 const API_BASE_URL = "https://tld-price-changes-api.vercel.app/api";
-
-export interface PriceChange {
-  tld: string;
-  oldPrice: number;
-  newPrice: number;
-  priceChange: number;
-  percentageChange: number;
-  date: string;
-  domainCount?: number; // Making it optional to maintain compatibility
-}
 
 const mockData: PriceChange[] = [
   {
@@ -90,32 +81,28 @@ const mockData: PriceChange[] = [
 export const api = {
   async getPriceChanges(): Promise<PriceChange[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/price-changes`);
+      const response = await axios.get<PriceChange[]>(`${API_BASE_URL}/price-changes`);
       if (response.data && response.data.length > 0) {
         return response.data;
       }
-      // Return mock data if API returns empty array
       return mockData;
     } catch (error) {
       console.error("Error fetching price changes:", error);
-      // Return mock data if API fails
       return mockData;
     }
   },
 
   async searchTLD(query: string): Promise<PriceChange[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/search?tld=${query}`);
+      const response = await axios.get<PriceChange[]>(`${API_BASE_URL}/search?tld=${query}`);
       if (response.data && response.data.length > 0) {
         return response.data;
       }
-      // Filter mock data if API returns empty array
       return mockData.filter(item => 
         item.tld.toLowerCase().includes(query.toLowerCase())
       );
     } catch (error) {
       console.error("Error searching TLD:", error);
-      // Filter mock data if API fails
       return mockData.filter(item => 
         item.tld.toLowerCase().includes(query.toLowerCase())
       );
