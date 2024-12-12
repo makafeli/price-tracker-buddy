@@ -64,7 +64,7 @@ const TldDetail = () => {
           <div className="p-6 bg-primary/[0.02] dark:bg-white/[0.02] rounded-lg">
             <p className={`text-sm ${themeStyles.muted} mb-1`}>Current Price</p>
             <p className={`text-2xl font-bold ${themeStyles.text}`}>
-              {formatCurrency(priceChange.newPrice)}
+              {formatCurrency(priceChange.oldPrice)}
             </p>
           </div>
 
@@ -76,9 +76,9 @@ const TldDetail = () => {
           </div>
 
           <div className="p-6 bg-primary/[0.02] dark:bg-white/[0.02] rounded-lg">
-            <p className={`text-sm ${themeStyles.muted} mb-1`}>Percentage Change</p>
-            <p className={`text-2xl font-bold ${priceChange.percentageChange > 0 ? "text-danger" : "text-success"}`}>
-              {priceChange.percentageChange.toFixed(2)}%
+            <p className={`text-sm ${themeStyles.muted} mb-1`}>New Price</p>
+            <p className={`text-2xl font-bold ${themeStyles.text}`}>
+              {formatCurrency(priceChange.newPrice)}
             </p>
           </div>
         </div>
@@ -131,7 +131,7 @@ const TldDetail = () => {
           <h2 className={`text-xl font-semibold ${themeStyles.text} mb-4`}>Price Change Details</h2>
           <div className="space-y-4">
             <div className={`flex justify-between py-3 border-b ${themeStyles.border}`}>
-              <span className={themeStyles.muted}>Previous Price</span>
+              <span className={themeStyles.muted}>Current Price</span>
               <span className={`font-medium ${themeStyles.text}`}>
                 {formatCurrency(priceChange.oldPrice)}
               </span>

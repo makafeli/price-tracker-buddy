@@ -31,7 +31,7 @@ export const PriceCard = ({ data }: PriceCardProps) => {
 
         <div className="flex justify-between items-center p-4 bg-primary/[0.02] rounded-lg">
           <div>
-            <p className="text-sm text-secondary/70">Old Price</p>
+            <p className="text-sm text-secondary/70">Current Price</p>
             <p className="text-lg font-semibold text-primary">{formatCurrency(data.oldPrice)}</p>
           </div>
           <div className="text-center px-4 py-2 rounded-md bg-white shadow-sm">
