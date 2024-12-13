@@ -7,7 +7,12 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { LineChart, Line, XAxis, YAxis } from "recharts";
 import { api } from "../services/api";
 import { CHART_COLORS, THEME_STYLES } from "../constants/theme";
-import { calculateAdditionalRevenue, formatCurrency, formatNumber, transformToChartData } from "../utils/priceCalculations";
+import { 
+  calculateAdditionalRevenue, 
+  formatCurrency, 
+  formatNumber, 
+  transformToChartData 
+} from "../utils/priceCalculations";
 
 const TldDetail = () => {
   const { tld } = useParams();
@@ -22,7 +27,8 @@ const TldDetail = () => {
   });
 
   const priceChange = priceChanges?.[0];
-  const chartData = priceChanges ? transformToChartData(priceChanges) : [];
+  // Convert readonly array to mutable array for Recharts
+  const chartData = priceChanges ? [...transformToChartData(priceChanges)] : [];
 
   if (isLoading) {
     return (
