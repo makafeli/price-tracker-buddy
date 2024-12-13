@@ -13,6 +13,7 @@ import {
   formatNumber, 
   transformToChartData 
 } from "../utils/priceCalculations";
+import { ChartDataPoint } from "../types/price";
 
 const TldDetail = () => {
   const { tld } = useParams();
@@ -27,8 +28,11 @@ const TldDetail = () => {
   });
 
   const priceChange = priceChanges?.[0];
-  // Convert readonly array to mutable array for Recharts
-  const chartData = priceChanges ? [...transformToChartData(priceChanges)] : [];
+  
+  // Explicitly type the chartData and convert to a mutable array
+  const chartData: ChartDataPoint[] = priceChanges 
+    ? transformToChartData(priceChanges).map(point => ({ ...point }))
+    : [];
 
   if (isLoading) {
     return (
