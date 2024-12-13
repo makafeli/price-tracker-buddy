@@ -1,3 +1,5 @@
+import { type PriceChange, type ChartDataPoint, PriceChangeModel } from "../types/price";
+
 export class PriceCalculator {
   static calculateAdditionalRevenue(priceChange: number, domainCount?: number): number {
     return domainCount ? priceChange * domainCount : 0;
@@ -18,7 +20,7 @@ export class PriceCalculator {
 
   static transformToChartData(priceChanges: readonly PriceChange[]): readonly ChartDataPoint[] {
     return [...priceChanges]
-      .map((change) => new PriceChangeModel(change).toChartDataPoint())
+      .map((change) => PriceChangeModel.fromJSON(change).toChartDataPoint())
       .reverse();
   }
 
@@ -34,3 +36,13 @@ export class PriceCalculator {
     return tld.replace(".", "").toLowerCase();
   }
 }
+
+// Export the static methods individually for easier imports
+export const {
+  calculateAdditionalRevenue,
+  formatCurrency,
+  formatNumber,
+  transformToChartData,
+  formatDate,
+  getTldPath
+} = PriceCalculator;
