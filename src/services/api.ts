@@ -2,7 +2,7 @@ import { PriceChange } from "../types/price";
 import { axiosInstance } from "./api.config";
 import { mockData } from "./mockData";
 
-export { PriceChange } from "../types/price";
+export type { PriceChange } from "../types/price";
 
 export const api = {
   async getPriceChanges(): Promise<PriceChange[]> {
