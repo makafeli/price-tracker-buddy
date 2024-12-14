@@ -15,7 +15,7 @@ export const PriceCard = ({ data }: PriceCardProps): JSX.Element => {
 
   return (
     <Link to={`/tld/${tldPath}`} className="block">
-      <div className="group relative overflow-hidden rounded-xl p-6 shadow-sm transition-all duration-300 animate-fade-up backdrop-blur-sm border border-border hover:shadow-md dark:shadow-none dark:border-border/20 bg-card hover:bg-card/80 dark:bg-card/80 dark:hover:bg-card/60">
+      <div className="group relative overflow-hidden rounded-xl p-6 shadow-sm transition-all duration-300 animate-fade-up backdrop-blur-sm border-2 dark:border-white/10 border-black/10 hover:border-primary/20 dark:hover:border-white/20 bg-card/80 hover:bg-card/60 dark:bg-card/60 dark:hover:bg-card/40">
         <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl transform group-hover:scale-150 transition-transform duration-500 dark:from-primary/10" />
         
         <div className="relative">
