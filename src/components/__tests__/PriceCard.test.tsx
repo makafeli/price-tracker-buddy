@@ -14,16 +14,43 @@ const mockData = {
 };
 
 describe('PriceCard', () => {
-  it('renders price card with correct data', () => {
-    render(
+  const renderPriceCard = (data = mockData) => {
+    return render(
       <BrowserRouter>
-        <PriceCard data={mockData} />
+        <PriceCard data={data} />
       </BrowserRouter>
     );
+  };
 
+  it('renders price card with correct data', () => {
+    renderPriceCard();
     expect(screen.getByText('.COM')).toBeInTheDocument();
     expect(screen.getByText('20.00%')).toBeInTheDocument();
     expect(screen.getByText('$10.00')).toBeInTheDocument();
     expect(screen.getByText('$12.00')).toBeInTheDocument();
+  });
+
+  it('displays correct price change indicators for price increase', () => {
+    renderPriceCard();
+    expect(screen.getByText('$2.00')).toBeInTheDocument();
+    expect(screen.getByText('20.00%')).toHaveClass('text-danger');
+  });
+
+  it('displays correct domain count and additional revenue', () => {
+    renderPriceCard();
+    expect(screen.getByText('1,000')).toBeInTheDocument();
+    expect(screen.getByText('$2,000.00')).toBeInTheDocument();
+  });
+
+  it('handles price decrease correctly', () => {
+    const decreaseData = {
+      ...mockData,
+      newPrice: 8,
+      priceChange: -2,
+      percentageChange: -20
+    };
+    renderPriceCard(decreaseData);
+    expect(screen.getByText('$2.00')).toBeInTheDocument();
+    expect(screen.getByText('-20.00%')).toHaveClass('text-success');
   });
 });
