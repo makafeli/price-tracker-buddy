@@ -3,11 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { api, PriceChange } from "../services/api";
 import { Hero } from "../components/Hero";
 import { PriceCard } from "../components/PriceCard";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, Sun, Moon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useTheme } from "@/hooks/use-theme";
+import { Toggle } from "@/components/ui/toggle";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { theme, toggleTheme } = useTheme();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["price-changes", searchQuery],
@@ -22,7 +25,23 @@ const Index = () => {
   const showEmptyState = !isLoading && !error && (!data || data.length === 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50/50">
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/50 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 pt-4">
+        <div className="flex justify-end mb-4">
+          <Toggle
+            aria-label="Toggle theme"
+            pressed={theme === 'dark'}
+            onPressedChange={toggleTheme}
+            className="p-2 hover:bg-muted"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Toggle>
+        </div>
+      </div>
       <Hero onSearch={handleSearch} />
       <div className="max-w-7xl mx-auto px-4 py-12">
         {isLoading ? (
