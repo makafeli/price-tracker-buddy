@@ -15,52 +15,52 @@ export const PriceCard = ({ data }: PriceCardProps): JSX.Element => {
 
   return (
     <Link to={`/tld/${tldPath}`} className="block">
-      <div className="group relative overflow-hidden bg-white rounded-xl p-6 shadow-sm border border-primary/5 hover:shadow-md transition-all duration-300 animate-fade-up backdrop-blur-sm hover:border-primary/10">
-        <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl transform group-hover:scale-150 transition-transform duration-500" />
+      <div className="group relative overflow-hidden rounded-xl p-6 shadow-sm transition-all duration-300 animate-fade-up backdrop-blur-sm border border-border hover:shadow-md dark:shadow-none dark:border-border/20 bg-card hover:bg-card/80 dark:bg-card/80 dark:hover:bg-card/60">
+        <div className="absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 bg-gradient-to-br from-primary/5 to-transparent rounded-full blur-2xl transform group-hover:scale-150 transition-transform duration-500 dark:from-primary/10" />
         
         <div className="relative">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <span className="text-sm text-secondary/70">{formattedDate}</span>
-              <h3 className="text-2xl font-bold text-primary mt-1 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-primary/70 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+              <span className="text-sm text-muted-foreground">{formattedDate}</span>
+              <h3 className="text-2xl font-bold text-card-foreground mt-1 group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-primary/70 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                 {data.tld}
               </h3>
             </div>
-            <div className={`flex items-center ${isIncrease ? "text-danger" : "text-success"} px-3 py-1 rounded-full bg-primary/5`}>
+            <div className={`flex items-center ${isIncrease ? "text-danger" : "text-success"} px-3 py-1 rounded-full bg-primary/5 dark:bg-primary/10`}>
               {isIncrease ? <ArrowUpIcon className="w-4 h-4" /> : <ArrowDownIcon className="w-4 h-4" />}
               <span className="font-semibold ml-1 text-sm">{data.percentageChange.toFixed(2)}%</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 p-4 bg-primary/[0.02] rounded-lg">
+          <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 dark:bg-muted/10 rounded-lg">
             <div className="text-center">
-              <p className="text-xs text-secondary/70 mb-1">Current Price</p>
-              <p className="text-base font-semibold text-primary">{PriceCalculator.formatCurrency(data.oldPrice)}</p>
+              <p className="text-xs text-muted-foreground mb-1">Current Price</p>
+              <p className="text-base font-semibold text-card-foreground">{PriceCalculator.formatCurrency(data.oldPrice)}</p>
             </div>
-            <div className="text-center px-2 py-1 rounded-md bg-white shadow-sm">
-              <p className="text-xs text-secondary/70 mb-1">Change</p>
+            <div className="text-center px-2 py-1 rounded-md bg-background shadow-sm dark:bg-muted/20">
+              <p className="text-xs text-muted-foreground mb-1">Change</p>
               <p className={`text-base font-semibold ${isIncrease ? "text-danger" : "text-success"}`}>
                 {PriceCalculator.formatCurrency(Math.abs(data.priceChange))}
               </p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-secondary/70 mb-1">New Price</p>
-              <p className="text-base font-semibold text-primary">{PriceCalculator.formatCurrency(data.newPrice)}</p>
+              <p className="text-xs text-muted-foreground mb-1">New Price</p>
+              <p className="text-base font-semibold text-card-foreground">{PriceCalculator.formatCurrency(data.newPrice)}</p>
             </div>
           </div>
           
           {data.domainCount && (
-            <div className="mt-4 p-4 bg-primary/[0.02] rounded-lg">
+            <div className="mt-4 p-4 bg-muted/50 dark:bg-muted/10 rounded-lg">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <p className="text-xs text-secondary/70 mb-1">Domain Count</p>
-                  <p className="text-base font-semibold text-primary">
+                  <p className="text-xs text-muted-foreground mb-1">Domain Count</p>
+                  <p className="text-base font-semibold text-card-foreground">
                     {PriceCalculator.formatNumber(data.domainCount)}
                   </p>
                 </div>
                 <div className="text-center">
-                  <p className="text-xs text-secondary/70 mb-1">Additional Revenue</p>
-                  <p className="text-base font-semibold text-primary">
+                  <p className="text-xs text-muted-foreground mb-1">Additional Revenue</p>
+                  <p className="text-base font-semibold text-card-foreground">
                     {PriceCalculator.formatCurrency(additionalRevenue)}
                   </p>
                 </div>
