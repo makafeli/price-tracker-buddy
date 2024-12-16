@@ -25,7 +25,7 @@ const Index = () => {
   const showEmptyState = !isLoading && !error && (!data || data.length === 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/50 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background dark:from-gray-900 dark:via-gray-800/50 dark:to-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <div className="flex justify-end mb-4">
           <Toggle
