@@ -72,7 +72,7 @@ export const NewsSection = () => {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="font-medium group-hover:text-primary transition-colors">
+                <h3 className="font-medium group-hover:text-primary transition-colors line-clamp-1">
                   {item.title}
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
