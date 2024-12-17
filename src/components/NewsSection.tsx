@@ -14,7 +14,6 @@ async function fetchRSSFeeds() {
     'http://www.dnjournal.com/rss.xml'
   ];
   
-  // Using RSS2JSON API to convert RSS to JSON (free service)
   const responses = await Promise.all(
     feeds.map(feed => 
       fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`)
@@ -32,7 +31,7 @@ async function fetchRSSFeeds() {
 
   return allItems.sort((a, b) => 
     new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-  ).slice(0, 5);
+  ).slice(0, 6);
 }
 
 export const NewsSection = () => {
@@ -59,27 +58,27 @@ export const NewsSection = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-12 px-4">
-      <h2 className="text-2xl font-bold mb-6">Latest Domain News</h2>
-      <div className="grid gap-4">
+    <div className="max-w-7xl mx-auto mt-12 px-4">
+      <h2 className="text-2xl font-bold mb-6 text-foreground">Latest Domain News</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {news?.map((item: NewsItem) => (
           <a
             key={item.link}
             href={item.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-4 rounded-lg border border-border bg-card hover:bg-accent/50 transition-colors group"
+            className="p-4 rounded-lg border border-input bg-card hover:bg-accent/50 transition-colors group"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="font-medium group-hover:text-primary transition-colors line-clamp-1">
+                <h3 className="font-medium group-hover:text-primary transition-colors line-clamp-2">
                   {item.title}
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   {item.pubDate}
                 </p>
               </div>
-              <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors flex-shrink-0" />
             </div>
           </a>
         ))}

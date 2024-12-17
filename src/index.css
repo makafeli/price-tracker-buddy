@@ -33,15 +33,6 @@
     --ring: 260 60% 10%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 260 30% 50%;
-    --sidebar-primary: 260 60% 10%;
-    --sidebar-primary-foreground: 260 84% 98%;
-    --sidebar-accent: 260 40% 96%;
-    --sidebar-accent-foreground: 260 60% 10%;
-    --sidebar-border: 260 30% 90%;
-    --sidebar-ring: 260 80% 50%;
   }
 
   .dark {
