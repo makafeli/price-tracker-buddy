@@ -14,9 +14,9 @@ export const Hero = ({ onSearch }: HeroProps) => {
   };
 
   return (
-    <div className="w-full py-32 px-4 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem]" />
+    <div className="w-full py-32 px-4 bg-gradient-to-br from-primary/5 via-primary/2 to-transparent relative">
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
+      <div className="fixed inset-0 bg-[linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
       <div className="max-w-4xl mx-auto text-center animate-fade-up relative">
         <div className="space-y-2 mb-8">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground drop-shadow-lg">
