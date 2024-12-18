@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, PriceChange } from "../services/api";
 import { Hero } from "../components/Hero";
+import { TldMenu } from "../components/TldMenu";
 import { PriceCard } from "../components/PriceCard";
 import { NewsSection } from "../components/NewsSection";
 import { Loader2, AlertCircle, Sun, Moon } from "lucide-react";
@@ -44,6 +45,7 @@ const Index = () => {
         </div>
       </div>
       <Hero onSearch={handleSearch} />
+      <TldMenu />
       <div className="max-w-7xl mx-auto px-4 py-12">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
