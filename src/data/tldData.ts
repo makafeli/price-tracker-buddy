@@ -1,51 +1,51 @@
-export const fallbackTldData = [
+export const tldData = [
   {
-    "tld": ".com",
+    "name": ".com",
     "type": "gTLD",
     "description": "Commercial organizations"
   },
   {
-    "tld": ".org",
+    "name": ".org",
     "type": "gTLD",
     "description": "Organizations (originally non-profit)"
   },
   {
-    "tld": ".net",
+    "name": ".net",
     "type": "gTLD",
     "description": "Network organizations"
   },
   {
-    "tld": ".edu",
+    "name": ".edu",
     "type": "sTLD",
     "description": "US educational institutions"
   },
   {
-    "tld": ".gov",
+    "name": ".gov",
     "type": "sTLD",
     "description": "US government"
   },
   {
-    "tld": ".uk",
+    "name": ".uk",
     "type": "ccTLD",
     "description": "United Kingdom"
   },
   {
-    "tld": ".jp",
+    "name": ".jp",
     "type": "ccTLD",
     "description": "Japan"
   },
   {
-    "tld": ".test",
-    "type": "test",
+    "name": ".test",
+    "type": "Test",
     "description": "Testing purposes"
   },
   {
-    "tld": ".arpa",
-    "type": "infrastructure",
+    "name": ".arpa",
+    "type": "Infrastructure",
     "description": "Infrastructure purposes"
   },
   {
-    "tld": ".brand",
+    "name": ".brand",
     "type": "grTLD",
     "description": "Brand-specific domains"
   }
