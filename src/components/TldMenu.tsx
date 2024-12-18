@@ -1,112 +1,65 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Grid, List } from "lucide-react";
-import axios from "axios";
-import { TLD, TLDType } from "@/types/tld";
-import { fallbackTldData } from "@/data/tldData";
+import React, { useState } from 'react';
+import { tldData } from '@/data/tldData';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-const TLD_TYPES: TLDType[] = ['gTLD', 'ccTLD', 'grTLD', 'sTLD', 'infrastructure', 'test'];
+const TLD_TYPES = [
+  'gTLD', 'ccTLD', 'grTLD', 'sTLD', 
+  'Infrastructure', 'Test'
+];
 
 export const TldMenu = () => {
-  const [tlds, setTlds] = useState<TLD[]>([]);
-  const [selectedType, setSelectedType] = useState<TLDType | 'all'>('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const navigate = useNavigate();
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    const fetchTlds = async () => {
-      try {
-        const response = await axios.get('https://tld-list.com/df/tld-list-details.json');
-        setTlds(response.data);
-      } catch (error) {
-        console.info('Using fallback TLD data due to API error');
-        setTlds(fallbackTldData);
-      }
-    };
-    fetchTlds();
-  }, []);
-
-  const filteredTlds = tlds.filter(tld => 
-    selectedType === 'all' || tld.type === selectedType
-  ).sort((a, b) => a.tld.localeCompare(b.tld));
-
-  const groupedTlds = filteredTlds.reduce((acc, tld) => {
-    const firstLetter = tld.tld.charAt(1).toUpperCase(); // Skip the dot
-    if (!acc[firstLetter]) {
-      acc[firstLetter] = [];
-    }
-    acc[firstLetter].push(tld);
-    return acc;
-  }, {} as Record<string, TLD[]>);
+  const filteredTlds = tldData.filter(tld => 
+    (!selectedType || tld.type === selectedType) &&
+    tld.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <Tabs defaultValue="all" className="w-auto">
-          <TabsList className="bg-muted inline-flex h-9 items-center justify-center rounded-full p-1">
-            <TabsTrigger
-              value="all"
-              onClick={() => setSelectedType('all')}
-              className="rounded-full px-3 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              All TLDs
-            </TabsTrigger>
-            {TLD_TYPES.map((type) => (
-              <TabsTrigger
-                key={type}
-                value={type}
-                onClick={() => setSelectedType(type)}
-                className="rounded-full px-3 py-1 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              >
-                {type}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-        <div className="flex gap-2">
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2 justify-center mb-4">
+        {TLD_TYPES.map(type => (
           <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode('grid')}
-            className={viewMode === 'grid' ? 'bg-primary text-primary-foreground' : ''}
+            key={type}
+            variant={selectedType === type ? 'default' : 'outline'}
+            className={cn(
+              "rounded-full px-4 py-2 transition-all duration-300",
+              selectedType === type 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            )}
+            onClick={() => setSelectedType(selectedType === type ? null : type)}
           >
-            <Grid className="h-4 w-4" />
+            {type}
           </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode('list')}
-            className={viewMode === 'list' ? 'bg-primary text-primary-foreground' : ''}
-          >
-            <List className="h-4 w-4" />
-          </Button>
-        </div>
+        ))}
       </div>
 
-      <ScrollArea className="h-[600px] rounded-md border">
-        <div className="p-4">
-          {Object.entries(groupedTlds).map(([letter, tlds]) => (
-            <div key={letter} className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">{letter}</h3>
-              <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-4 gap-4' : 'space-y-2'}>
-                {tlds.map((tld) => (
-                  <Button
-                    key={tld.tld}
-                    variant="outline"
-                    className="w-full justify-start hover:bg-primary hover:text-primary-foreground"
-                    onClick={() => navigate(`/tld/${tld.tld.substring(1)}`)}
-                  >
-                    {tld.tld}
-                  </Button>
-                ))}
-              </div>
+      <input 
+        type="text" 
+        placeholder="Search TLDs..." 
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="w-full px-4 py-2 border rounded-md bg-background text-foreground 
+                   focus:outline-none focus:ring-2 focus:ring-primary/50"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+        {filteredTlds.map(tld => (
+          <div 
+            key={tld.name} 
+            className="bg-card border rounded-lg p-4 shadow-sm 
+                        hover:border-primary/50 transition-colors"
+          >
+            <div className="flex justify-between items-center">
+              <span className="font-semibold text-foreground">{tld.name}</span>
+              <span className="text-muted-foreground text-sm">{tld.type}</span>
             </div>
-          ))}
-        </div>
-      </ScrollArea>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
