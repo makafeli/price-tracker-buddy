@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Grid, List } from "lucide-react";
 import axios from "axios";
 import { TLD, TLDType } from "@/types/tld";
+import { fallbackTldData } from "@/data/tldData";
 
 const TLD_TYPES: TLDType[] = ['gTLD', 'ccTLD', 'grTLD', 'sTLD', 'infrastructure', 'test'];
 
@@ -21,7 +22,8 @@ export const TldMenu = () => {
         const response = await axios.get('https://tld-list.com/df/tld-list-details.json');
         setTlds(response.data);
       } catch (error) {
-        console.error('Failed to fetch TLDs:', error);
+        console.info('Using fallback TLD data due to API error');
+        setTlds(fallbackTldData);
       }
     };
     fetchTlds();
