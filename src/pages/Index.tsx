@@ -2,17 +2,19 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, PriceChange } from "../services/api";
 import { Hero } from "../components/Hero";
-import { TldMenu } from "../components/TldMenu";
 import { PriceCard } from "../components/PriceCard";
 import { NewsSection } from "../components/NewsSection";
 import { Loader2, AlertCircle, Sun, Moon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTheme } from "@/hooks/use-theme";
 import { Toggle } from "@/components/ui/toggle";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["price-changes", searchQuery],
@@ -29,7 +31,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 pt-4">
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-between items-center mb-4">
+          <Button
+            onClick={() => navigate('/tld-list')}
+            variant="outline"
+            className="hover:bg-primary hover:text-primary-foreground"
+          >
+            Browse TLD Directory
+          </Button>
           <Toggle
             aria-label="Toggle theme"
             pressed={theme === 'dark'}
@@ -45,7 +54,6 @@ const Index = () => {
         </div>
       </div>
       <Hero onSearch={handleSearch} />
-      <TldMenu />
       <div className="max-w-7xl mx-auto px-4 py-12">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">

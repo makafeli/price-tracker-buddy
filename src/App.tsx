@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Index from "./pages/Index";
 import TldDetail from "./pages/TldDetail";
+import TldList from "./pages/TldList";
 import "./App.css";
 
 const queryClient = new QueryClient({
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/tld/:tld" element={<TldDetail />} />
+            <Route path="/tld-list" element={<TldList />} />
           </Routes>
         </Router>
       </ThemeProvider>
