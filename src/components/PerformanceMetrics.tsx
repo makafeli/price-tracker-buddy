@@ -21,7 +21,7 @@ interface HealthStatus {
   uptime: number;
   version: string;
   timestamp?: string;
-  metrics?: Record<string, unknown>;
+  metrics: Record<string, unknown>;
   lastError?: {
     message: string;
     code: string;
@@ -62,7 +62,7 @@ export function PerformanceMetrics() {
       uptime: healthData.uptime as number,
       version: healthData.version as string,
       timestamp: healthData.timestamp as string | undefined,
-      metrics: healthData.metrics,
+      metrics: healthData.metrics as Record<string, unknown>,
       lastError: healthData.lastError as { message: string; code: string; } | undefined
     };
   });
@@ -76,7 +76,7 @@ export function PerformanceMetrics() {
         uptime: healthData.uptime as number,
         version: healthData.version as string,
         timestamp: healthData.timestamp as string | undefined,
-        metrics: healthData.metrics,
+        metrics: healthData.metrics as Record<string, unknown>,
         lastError: healthData.lastError as { message: string; code: string; } | undefined
       });
     }, 5000); // Update every 5 seconds
