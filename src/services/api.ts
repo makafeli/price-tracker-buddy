@@ -6,31 +6,67 @@ const apiClient = axios.create({
   timeout: 10000,
 });
 
-apiClient.interceptors.request.use((config) => {
-  return config;
-});
-
+// Configure interceptors to automatically extract data from response
 apiClient.interceptors.response.use(
   (response) => response.data,
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 export const api = {
   async getPriceChanges(): Promise<PriceChange[]> {
-    const response = await apiClient.get<PriceChange[]>("/price-changes");
-    return response;
+    // Mock data for development
+    return [
+      {
+        id: "1",
+        tld: ".com",
+        oldPrice: 10.99,
+        newPrice: 12.99,
+        priceChange: 2,
+        percentageChange: 18.2,
+        date: new Date().toISOString(),
+        domainCount: 1000,
+        history: [],
+        lastChecked: new Date().toISOString(),
+        nextCheck: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        sources: ["registrar-a"]
+      },
+      {
+        id: "2",
+        tld: ".net",
+        oldPrice: 9.99,
+        newPrice: 8.99,
+        priceChange: -1,
+        percentageChange: -10,
+        date: new Date().toISOString(),
+        domainCount: 500,
+        history: [],
+        lastChecked: new Date().toISOString(),
+        nextCheck: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+        sources: ["registrar-b"]
+      }
+    ];
+    // When API is ready, uncomment this:
+    // return await apiClient.get<PriceChange[]>("/price-changes");
   },
 
   async searchTLD(query: string): Promise<PriceChange[]> {
-    const response = await apiClient.get<PriceChange[]>(`/price-changes/search?query=${query}`);
-    return response;
+    // Mock data filtered by query
+    return (await this.getPriceChanges()).filter(
+      change => change.tld.toLowerCase().includes(query.toLowerCase())
+    );
+    // When API is ready, uncomment this:
+    // return await apiClient.get<PriceChange[]>(`/price-changes/search?query=${query}`);
   },
 
   async getPriceHistory(tld: string): Promise<PriceHistory[]> {
-    const response = await apiClient.get<PriceHistory[]>(`/history/${tld}`);
-    return response;
+    // Mock history data
+    return [
+      { date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), price: 9.99, source: "registrar-a" },
+      { date: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(), price: 10.99, source: "registrar-a" },
+      { date: new Date().toISOString(), price: 12.99, source: "registrar-a" }
+    ];
+    // When API is ready, uncomment this:
+    // return await apiClient.get<PriceHistory[]>(`/history/${tld}`);
   },
 
   async setAlert(tld: string, alert: PriceAlert): Promise<void> {
@@ -42,8 +78,15 @@ export const api = {
   },
 
   async comparePrices(tlds: string[]): Promise<Record<string, PriceChange>> {
-    const response = await apiClient.get<Record<string, PriceChange>>(`/compare?tlds=${tlds.join(',')}`);
-    return response;
+    // Mock comparison data
+    const changes = await this.getPriceChanges();
+    return Object.fromEntries(
+      changes
+        .filter(change => tlds.includes(change.tld))
+        .map(change => [change.tld, change])
+    );
+    // When API is ready, uncomment this:
+    // return await apiClient.get<Record<string, PriceChange>>(`/compare?tlds=${tlds.join(',')}`);
   },
 
   async adminLogin(password: string): Promise<boolean> {
