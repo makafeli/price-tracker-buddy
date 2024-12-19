@@ -16,7 +16,7 @@ const Index = () => {
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<PriceChange[]>({
     queryKey: ["price-changes", searchQuery],
     queryFn: () =>
       searchQuery ? api.searchTLD(searchQuery) : api.getPriceChanges(),

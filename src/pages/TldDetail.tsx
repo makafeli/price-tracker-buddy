@@ -22,7 +22,7 @@ const TldDetail = () => {
   const themeStyles = theme === 'dark' ? THEME_STYLES.dark : THEME_STYLES.light;
   const chartColors = theme === 'dark' ? CHART_COLORS.dark : CHART_COLORS.light;
 
-  const { data: priceChanges, isLoading, error } = useQuery({
+  const { data: priceChanges, isLoading, error } = useQuery<PriceChange[]>({
     queryKey: ["tld-detail", normalizedTld],
     queryFn: () => api.searchTLD(normalizedTld),
   });

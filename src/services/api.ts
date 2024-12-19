@@ -1,41 +1,59 @@
 import axios from "axios";
+import { PriceChange, PriceHistory, PriceAlert } from "../types/price";
 
 const apiClient = axios.create({
-  baseURL: "https://api.example.com", // Replace with your API base URL
+  baseURL: "https://api.example.com",
   timeout: 10000,
 });
 
-// Interceptors for request and response
 apiClient.interceptors.request.use((config) => {
-  // Add any request headers or configurations here
   return config;
 });
 
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    // Handle errors globally
     return Promise.reject(error);
   }
 );
 
 export const api = {
-  async getPriceChanges() {
-    return apiClient.get("/price-changes");
+  async getPriceChanges(): Promise<PriceChange[]> {
+    const response = await apiClient.get("/price-changes");
+    return response;
   },
 
-  async searchTLD(query: string) {
-    return apiClient.get(`/price-changes/search?query=${query}`);
+  async searchTLD(query: string): Promise<PriceChange[]> {
+    const response = await apiClient.get(`/price-changes/search?query=${query}`);
+    return response;
+  },
+
+  async getPriceHistory(tld: string): Promise<PriceHistory[]> {
+    const response = await apiClient.get(`/history/${tld}`);
+    return response;
+  },
+
+  async setAlert(tld: string, alert: PriceAlert): Promise<void> {
+    await apiClient.post(`/alerts`, { tld, ...alert });
+  },
+
+  async checkAlerts(userId: string): Promise<void> {
+    await apiClient.get(`/alerts/check/${userId}`);
+  },
+
+  async comparePrices(tlds: string[]): Promise<Record<string, PriceChange>> {
+    const response = await apiClient.get(`/compare?tlds=${tlds.join(',')}`);
+    return response;
   },
 
   async adminLogin(password: string): Promise<boolean> {
-    // In a real application, this would make an API call to validate credentials
-    return password === "admin123"; // Temporary simple password check
+    return password === "admin123";
   },
 
   async checkAuthStatus(): Promise<boolean> {
-    // In a real application, this would verify the session/token
     const isAuthenticated = localStorage.getItem("adminAuthenticated") === "true";
     return isAuthenticated;
   },
 };
+
+export type { PriceChange, PriceHistory, PriceAlert } from "../types/price";
