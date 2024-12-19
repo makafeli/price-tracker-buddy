@@ -26,8 +26,10 @@ class MonitoringService {
   private apiCallsError = 0;
   private cacheHits = 0;
   private responseTimes: number[] = [];
+  private startTime: number;
 
   private constructor() {
+    this.startTime = Date.now();
     // Start periodic metrics calculation
     setInterval(() => this.calculateMetrics(), 60000); // Every minute
   }
@@ -111,8 +113,12 @@ class MonitoringService {
 
   private async notifyExternalService(error: Omit<ErrorEvent, 'timestamp'>): Promise<void> {
     // TODO: Implement external error reporting service integration
-    // Example: Sentry, LogRocket, etc.
     console.error('Critical error:', error);
+  }
+
+  // Calculate uptime in seconds
+  private getUptime(): number {
+    return Math.floor((Date.now() - this.startTime) / 1000);
   }
 
   // Health check endpoint data
@@ -121,10 +127,10 @@ class MonitoringService {
     return {
       status: this.metrics.errorRate < 5 ? 'healthy' : 'degraded',
       timestamp: now.toISOString(),
-      uptime: process.uptime(),
+      uptime: this.getUptime(),
       metrics: this.metrics,
       lastError: this.errors[this.errors.length - 1] || null,
-      version: process.env.VITE_APP_VERSION || '1.0.0',
+      version: '1.0.0', // Hardcoded version instead of using process.env
     };
   }
 }
