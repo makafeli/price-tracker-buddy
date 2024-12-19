@@ -19,17 +19,17 @@ apiClient.interceptors.response.use(
 
 export const api = {
   async getPriceChanges(): Promise<PriceChange[]> {
-    const response = await apiClient.get("/price-changes");
+    const response = await apiClient.get<PriceChange[]>("/price-changes");
     return response;
   },
 
   async searchTLD(query: string): Promise<PriceChange[]> {
-    const response = await apiClient.get(`/price-changes/search?query=${query}`);
+    const response = await apiClient.get<PriceChange[]>(`/price-changes/search?query=${query}`);
     return response;
   },
 
   async getPriceHistory(tld: string): Promise<PriceHistory[]> {
-    const response = await apiClient.get(`/history/${tld}`);
+    const response = await apiClient.get<PriceHistory[]>(`/history/${tld}`);
     return response;
   },
 
@@ -42,7 +42,7 @@ export const api = {
   },
 
   async comparePrices(tlds: string[]): Promise<Record<string, PriceChange>> {
-    const response = await apiClient.get(`/compare?tlds=${tlds.join(',')}`);
+    const response = await apiClient.get<Record<string, PriceChange>>(`/compare?tlds=${tlds.join(',')}`);
     return response;
   },
 

@@ -5,7 +5,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTheme } from "@/hooks/use-theme";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis } from "recharts";
-import { api } from "../services/api";
+import { api, PriceChange } from "../services/api";
 import { CHART_COLORS, THEME_STYLES } from "../constants/theme";
 import { 
   calculateAdditionalRevenue, 
