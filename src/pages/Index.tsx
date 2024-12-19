@@ -10,7 +10,6 @@ import { useTheme } from "@/hooks/use-theme";
 import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { PerformanceMetrics } from "@/components/PerformanceMetrics"; // Import the component
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -56,7 +55,6 @@ const Index = () => {
       </div>
       <Hero onSearch={handleSearch} />
       <div className="max-w-7xl mx-auto px-4 py-12">
-        {/* Existing price changes rendering code */}
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -90,12 +88,6 @@ const Index = () => {
         )}
       </div>
       <NewsSection />
-      
-      {/* Add PerformanceMetrics section */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-6">System Performance</h2>
-        <PerformanceMetrics />
-      </div>
     </div>
   );
 };
