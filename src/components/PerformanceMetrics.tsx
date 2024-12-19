@@ -20,6 +20,8 @@ interface HealthStatus {
   status: 'healthy' | 'degraded';
   uptime: number;
   version: string;
+  timestamp?: string;
+  metrics?: Record<string, unknown>;
   lastError?: {
     message: string;
     code: string;
@@ -53,7 +55,7 @@ function MetricCard({ title, value, description, icon, trend }: MetricCardProps)
 
 export function PerformanceMetrics() {
   const [metrics, setMetrics] = React.useState(() => monitoringService.getMetrics());
-  const [health, setHealth] = React.useState<HealthStatus>(() => monitoringService.getHealthStatus());
+  const [health, setHealth] = React.useState<HealthStatus>(() => monitoringService.getHealthStatus() as HealthStatus);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
