@@ -4,13 +4,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { PriceCard } from '../PriceCard';
 
 const mockData = {
+  id: "test-1",
   tld: '.COM',
   date: '2024-03-20',
   oldPrice: 10,
   newPrice: 12,
   priceChange: 2,
   percentageChange: 20,
-  domainCount: 1000
+  domainCount: 1000,
+  history: [],
+  lastChecked: new Date().toISOString(),
+  nextCheck: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  sources: ["registry"]
 };
 
 describe('PriceCard', () => {

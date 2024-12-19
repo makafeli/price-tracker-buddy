@@ -16,6 +16,16 @@ interface MetricCardProps {
   };
 }
 
+interface HealthStatus {
+  status: 'healthy' | 'degraded';
+  uptime: number;
+  version: string;
+  lastError?: {
+    message: string;
+    code: string;
+  };
+}
+
 function MetricCard({ title, value, description, icon, trend }: MetricCardProps) {
   return (
     <Card>
@@ -43,12 +53,12 @@ function MetricCard({ title, value, description, icon, trend }: MetricCardProps)
 
 export function PerformanceMetrics() {
   const [metrics, setMetrics] = React.useState(() => monitoringService.getMetrics());
-  const [health, setHealth] = React.useState(() => monitoringService.getHealthStatus());
+  const [health, setHealth] = React.useState<HealthStatus>(() => monitoringService.getHealthStatus());
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       setMetrics(monitoringService.getMetrics());
-      setHealth(monitoringService.getHealthStatus());
+      setHealth(monitoringService.getHealthStatus() as HealthStatus);
     }, 5000); // Update every 5 seconds
 
     return () => clearInterval(interval);
