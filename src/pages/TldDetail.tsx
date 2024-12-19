@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, AlertCircle, ArrowLeft } from "lucide-react";
+import { Loader2, AlertCircle, Home } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useTheme } from "@/hooks/use-theme";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -14,6 +14,14 @@ import {
   transformToChartData 
 } from "../utils/priceCalculations";
 import { ChartDataPoint } from "../types/price";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const TldDetail = () => {
   const { tld } = useParams();
@@ -46,10 +54,23 @@ const TldDetail = () => {
         <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
         <div className="fixed inset-0 bg-[linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <Link to="/" className="flex items-center text-primary/70 hover:text-primary mb-6">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Price Changes
-          </Link>
+          <Breadcrumb className="mb-6">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link to="/" className="flex items-center">
+                    <Home className="w-4 h-4 mr-2" />
+                    Home
+                  </Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>TLD Details</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>TLD not found or error loading data</AlertDescription>
@@ -67,10 +88,22 @@ const TldDetail = () => {
       <div className="fixed inset-0 bg-[linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:3rem_3rem] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 py-12 relative">
-        <Link to="/" className={`flex items-center ${themeStyles.muted} hover:${themeStyles.text} mb-6`}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Price Changes
-        </Link>
+        <Breadcrumb className="mb-6">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link to="/" className="flex items-center">
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>TLD Details</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         
         <div className="bg-gradient-to-br from-primary/5 via-primary/2 to-transparent rounded-xl p-8 shadow-sm backdrop-blur-sm">
           <h1 className={`text-4xl font-bold ${themeStyles.text} mb-2`}>{priceChange.tld}</h1>
