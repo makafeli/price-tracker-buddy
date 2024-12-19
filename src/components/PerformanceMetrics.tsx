@@ -55,12 +55,30 @@ function MetricCard({ title, value, description, icon, trend }: MetricCardProps)
 
 export function PerformanceMetrics() {
   const [metrics, setMetrics] = React.useState(() => monitoringService.getMetrics());
-  const [health, setHealth] = React.useState<HealthStatus>(() => monitoringService.getHealthStatus() as HealthStatus);
+  const [health, setHealth] = React.useState<HealthStatus>(() => {
+    const healthData = monitoringService.getHealthStatus();
+    return {
+      status: healthData.status as 'healthy' | 'degraded',
+      uptime: healthData.uptime as number,
+      version: healthData.version as string,
+      timestamp: healthData.timestamp as string | undefined,
+      metrics: healthData.metrics,
+      lastError: healthData.lastError as { message: string; code: string; } | undefined
+    };
+  });
 
   React.useEffect(() => {
     const interval = setInterval(() => {
       setMetrics(monitoringService.getMetrics());
-      setHealth(monitoringService.getHealthStatus() as HealthStatus);
+      const healthData = monitoringService.getHealthStatus();
+      setHealth({
+        status: healthData.status as 'healthy' | 'degraded',
+        uptime: healthData.uptime as number,
+        version: healthData.version as string,
+        timestamp: healthData.timestamp as string | undefined,
+        metrics: healthData.metrics,
+        lastError: healthData.lastError as { message: string; code: string; } | undefined
+      });
     }, 5000); // Update every 5 seconds
 
     return () => clearInterval(interval);
