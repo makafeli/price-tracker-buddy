@@ -2,7 +2,7 @@ import axios from 'axios';
 import rateLimit from 'axios-rate-limit';
 import { setupCache } from 'axios-cache-interceptor';
 
-export const API_BASE_URL = process.env.VITE_API_URL || "https://tld-price-changes-api.vercel.app/api";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "https://tld-price-changes-api.vercel.app/api";
 
 // Create axios instance with base configuration
 const axiosBase = axios.create({
