@@ -59,8 +59,8 @@ const TldDetail = () => {
               <BreadcrumbItem>
                 <BreadcrumbLink asChild>
                   <Link to="/" className="flex items-center">
-                    <Home className="w-4 h-4 mr-2" />
-                    Home
+                    <Home className="w-4 h-4" />
+                    <span className="sr-only">Home</span>
                   </Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
@@ -93,8 +93,8 @@ const TldDetail = () => {
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link to="/" className="flex items-center">
-                  <Home className="w-4 h-4 mr-2" />
-                  Home
+                  <Home className="w-4 h-4" />
+                  <span className="sr-only">Home</span>
                 </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
