@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Loader2, ExternalLink } from "lucide-react";
+import { Loader2, ExternalLink, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
 
 interface NewsItem {
@@ -8,30 +8,67 @@ interface NewsItem {
   pubDate: string;
 }
 
+// Fallback data in case the API fails
+const fallbackNews: NewsItem[] = [
+  {
+    title: "Domain Industry Updates Temporarily Unavailable",
+    link: "https://domainnamewire.com",
+    pubDate: new Date().toLocaleDateString(),
+  },
+  {
+    title: "Check Back Later for Latest Domain News",
+    link: "http://www.dnjournal.com",
+    pubDate: new Date().toLocaleDateString(),
+  },
+];
+
 async function fetchRSSFeeds() {
-  const feeds = [
-    'https://domainnamewire.com/feed/',
-    'http://www.dnjournal.com/rss.xml'
-  ];
-  
-  const responses = await Promise.all(
-    feeds.map(feed => 
-      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`)
-        .then(res => res.json())
-    )
-  );
+  try {
+    const feeds = [
+      'https://domainnamewire.com/feed/',
+      'http://www.dnjournal.com/rss.xml'
+    ];
+    
+    const responses = await Promise.allSettled(
+      feeds.map(feed => 
+        fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`, {
+          headers: {
+            'Accept': 'application/json',
+          },
+        })
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return res.json();
+          })
+      )
+    );
 
-  const allItems = responses.flatMap(response => 
-    response.items?.map((item: any) => ({
-      title: item.title,
-      link: item.link,
-      pubDate: new Date(item.pubDate).toLocaleDateString()
-    })) || []
-  );
+    const successfulResponses = responses
+      .filter((response): response is PromiseFulfilledResult<any> => 
+        response.status === 'fulfilled' && response.value?.items
+      )
+      .map(response => response.value);
 
-  return allItems.sort((a, b) => 
-    new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-  ).slice(0, 6);
+    if (successfulResponses.length === 0) {
+      console.warn('No successful RSS feeds fetched, using fallback data');
+      return fallbackNews;
+    }
+
+    const allItems = successfulResponses.flatMap(response => 
+      response.items?.map((item: any) => ({
+        title: item.title,
+        link: item.link,
+        pubDate: new Date(item.pubDate).toLocaleDateString()
+      })) || []
+    );
+
+    return allItems.sort((a, b) => 
+      new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+    ).slice(0, 6);
+  } catch (error) {
+    console.error('Error fetching RSS feeds:', error);
+    return fallbackNews;
+  }
 }
 
 export const NewsSection = () => {
@@ -39,6 +76,7 @@ export const NewsSection = () => {
     queryKey: ['news'],
     queryFn: fetchRSSFeeds,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 2,
   });
 
   if (isLoading) {
@@ -51,8 +89,9 @@ export const NewsSection = () => {
 
   if (error) {
     return (
-      <Alert variant="destructive">
-        <AlertDescription>Failed to load news feed</AlertDescription>
+      <Alert variant="destructive" className="max-w-7xl mx-auto mt-12">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>Unable to load news feed. Please try again later.</AlertDescription>
       </Alert>
     );
   }
